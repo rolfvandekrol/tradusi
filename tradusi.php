@@ -29,20 +29,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+register_activation_hook( __FILE__, 'tradusi_activate' );
+function tradusi_activate(){
+	 /*$path = ABSPATH . '/tradusi/' ;
+	 var_dump(ABSPATH);
+        
+  if (!is_dir($path) && !mkdir($path, 0755, false)) {
+  	die('cannot create folder for tradusi gettext files');
+  }*/
+}
+
 function s( $identifier, $context ){
-	$context_strings = tradusi_get_context_array();
+	$context_strings = tradusi_get_context_array( $context );
   
   return $context_strings[$identifier][LANGUAGE_CODE];
 }
 
 function se( $identifier, $context ){
-	$context_strings = tradusi_get_context_array();
-  
-  echo $context_strings[$identifier][LANGUAGE_CODE];
+	echo s( $identifier, $context );
 }
 
-function tradusi_get_context_array(){
-	$context_strings = file_get_contents( ABSPATH . 'tradusi/strings/context.json');
+function tradusi_get_context_array( $context ){
+	$context_strings = file_get_contents( ABSPATH . 'tradusi/' . $context . '.json');
 
 	return json_decode( $context_strings, true );
 }
