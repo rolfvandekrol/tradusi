@@ -39,14 +39,14 @@ function tradusi_activate(){
   }*/
 }
 
-function s( $identifier, $context ){
+function ___( $identifier, $context ){
 	$context_strings = tradusi_get_context_array( $context );
   
   return $context_strings[$identifier][LANGUAGE_CODE];
 }
 
-function se( $identifier, $context ){
-	echo s( $identifier, $context );
+function __e( $identifier, $context ){
+	echo ___( $identifier, $context );
 }
 
 function tradusi_get_context_array( $context ){
