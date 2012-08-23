@@ -31,26 +31,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 register_activation_hook( __FILE__, 'tradusi_activate' );
 function tradusi_activate(){
-	 /*$path = ABSPATH . '/tradusi/' ;
-	 var_dump(ABSPATH);
+   /*$path = ABSPATH . '/tradusi/' ;
+   var_dump(ABSPATH);
         
   if (!is_dir($path) && !mkdir($path, 0755, false)) {
-  	die('cannot create folder for tradusi gettext files');
+    die('cannot create folder for tradusi gettext files');
   }*/
 }
 
 function ___( $identifier, $context ){
-	$context_strings = tradusi_get_context_array( $context );
+  $context_strings = tradusi_get_context_array( $context );
   
   return $context_strings[$identifier][LANGUAGE_CODE];
 }
 
 function __e( $identifier, $context ){
-	echo ___( $identifier, $context );
+  echo ___( $identifier, $context );
 }
 
 function tradusi_get_context_array( $context ){
-	$context_strings = file_get_contents( ABSPATH . 'tradusi/' . $context . '.json');
+  $context_strings = file_get_contents( ABSPATH . 'tradusi/' . $context . '.json');
 
-	return json_decode( $context_strings, true );
+  return json_decode( $context_strings, true );
 }
