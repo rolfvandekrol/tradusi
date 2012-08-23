@@ -40,17 +40,57 @@ function tradusi_activate(){
 }
 
 function ___( $identifier, $context ){
-  $context_strings = tradusi_get_context_array( $context );
-  
-  return $context_strings[$identifier][LANGUAGE_CODE];
+  $context_strings = tradusi_get_context_array( $context, $identifier );
+  if ($context_strings){
+    if (isset($context_strings[LANGUAGE_CODE])) {
+      return $context_strings[LANGUAGE_CODE];
+    }
+  }
+
+  return '';
 }
 
 function __e( $identifier, $context ){
   echo ___( $identifier, $context );
 }
 
-function tradusi_get_context_array( $context ){
-  $context_strings = file_get_contents( ABSPATH . 'tradusi/' . $context . '.json');
+function tradusi_context_storage( $context, $data = NULL, $identifier = NULL ){
+  static $storage = array();
 
-  return json_decode( $context_strings, true );
+  if (isset($data)) {
+    $storage[$context] = $data;
+  }
+
+  if (isset($identifier)) {
+    if (!isset($storage[$context])) {
+      return;
+    }
+
+    if (isset($storage[$context][$identifier])) {
+      return $storage[$context][$identifier];
+    }
+
+    return false;
+  }
+
+  if (isset($storage[$context])) {
+    return $storage[$context];
+  }
+}
+
+function tradusi_load_context( $context ) {
+  return json_decode( file_get_contents( ABSPATH . 'tradusi/' . $context . '.json'), true );
+}
+
+function tradusi_get_context_array( $context, $identifier ){
+  $data = tradusi_context_storage( $context, NULL, $identifier );
+  if (isset($data)) {
+    return $data;
+  }
+
+  $full_data = tradusi_load_context( $context );
+  tradusi_context_storage( $context, $full_data );
+
+  $data = tradusi_context_storage( $context, NULL, $identifier );
+  return isset($data) ? $data : false;
 }
